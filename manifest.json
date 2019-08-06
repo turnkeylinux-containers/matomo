@@ -8,8 +8,8 @@
         },
         "containers": [
             { 
-                "name": "joomla",
-                "version": "3.9.8",
+                "name": "matomo",
+                "version": "3.11.0",
                 "mountPoints": [
                     {
                         "sourceVolume": "webroot",
@@ -34,11 +34,11 @@
                 ],
                 "environment": {
                     "APP_USER": "admin",
-                    "APP_PASS": "Kappa123",
+                    "APP_PASS": "turnkey1",
                     "APP_MAIL": "admin@example.com",
                     "DB_USER": "matomo",
                     "DB_NAME": "matomo",
-                    "DB_PASS": "Kappa123"
+                    "DB_PASS": "turnkey1"
                 },
                 "cpu": 256,
                 "ram": 256
@@ -83,7 +83,7 @@
                 "environment": {
                     "DB_USER": "matomo",
                     "DB_NAME": "matomo",
-                    "DB_PASS": "Kappa123"
+                    "DB_PASS": "turnkey1"
                 },
                 "cpu": 256,
                 "ram": 512
