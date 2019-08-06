@@ -1,0 +1,99 @@
+{
+    "meta": {
+        "build_args": {
+            "PRODUCT_NAME": "matomo",
+            "PRODUCT_VERSION": "3.11.0",
+            "BASE_IMAGE": "$REPO/php-fpm:7.3",
+            "KEEP_USER": "www-data"
+        },
+        "containers": [
+            { 
+                "name": "joomla",
+                "version": "3.9.8",
+                "mountPoints": [
+                    {
+                        "sourceVolume": "webroot",
+                        "containerPath": "/var/www/html",
+                        "readOnly": false
+                    },
+                    {
+                        "sourceVolume": "vhosts",
+                        "containerPath": "/etc/turnkey/vhosts",
+                        "readOnly": false
+                    },
+                    {
+                        "sourceVolume": "initdb",
+                        "containerPath": "/etc/turnkey/initdb",
+                        "readOnly": false
+                    },
+                    {
+                        "sourceVolume": "secrets",
+                        "containerPath": "/etc/turnkey/secrets",
+                        "readOnly": true
+                    }
+                ],
+                "environment": {
+                    "APP_USER": "admin",
+                    "APP_PASS": "Kappa123",
+                    "APP_MAIL": "admin@example.com",
+                    "DB_USER": "matomo",
+                    "DB_NAME": "matomo",
+                    "DB_PASS": "Kappa123"
+                },
+                "cpu": 256,
+                "ram": 256
+            },
+            {
+                "name": "nginx",
+                "version": "1.14.2",
+                "ports": {
+                    "80": "tcp",
+                    "443": "tcp"
+                },
+                "mountPoints": [
+                    {
+                        "sourceVolume": "webroot",
+                        "containerPath": "/var/www/html",
+                        "readOnly": true
+                    },
+                    {
+                        "sourceVolume": "vhosts",
+                        "containerPath": "/etc/turnkey/vhosts",
+                        "readOnly": true
+                    }
+                ],
+                "cpu": 256,
+                "ram": 256
+            },
+            {
+                "name": "mariadb",
+                "version": "10.3",
+                "mountPoints": [
+                    {
+                        "sourceVolume": "initdb",
+                        "containerPath": "/etc/turnkey/initdb",
+                        "readOnly": true
+                    },
+                    {
+                        "sourceVolume": "secrets",
+                        "containerPath": "/etc/turnkey/secrets",
+                        "readOnly": true
+                    }
+                ],
+                "environment": {
+                    "DB_USER": "matomo",
+                    "DB_NAME": "matomo",
+                    "DB_PASS": "Kappa123"
+                },
+                "cpu": 256,
+                "ram": 512
+            }
+        ],
+        "volumes": [
+            { "name": "webroot" },
+            { "name": "vhosts" },
+            { "name": "initdb" },
+            { "name": "secrets" }
+        ]
+    }
+}

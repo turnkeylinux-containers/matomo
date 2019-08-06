@@ -1,0 +1,22 @@
+#!/bin/bash
+set -exuo pipefail
+
+declare -r KEEP_USER="${KEEP_USER:-}"
+KEEP_USERS="root mail _apt"
+KEEP_GROUPS="${KEEP_USERS} nogroup adm tty shadow utmp staff"
+
+[[ -z "${KEEP_USER}" ]] || {
+    declare -r KEEP_USERS="${KEEP_USERS} ${KEEP_USER}"
+    declare -r KEEP_GROUPS="${KEEP_GROUPS} ${KEEP_USER}"
+}
+
+declare -r KEEP_USERS_PATTERN=$( echo "${KEEP_USERS}" | sed 's# #\\|#g' )
+declare -r KEEP_GROUPS_PATTERN=$( echo "${KEEP_GROUPS}" | sed 's# #\\|#g' )
+
+#cat /etc/passwd | cut -d':' -f1 | sed "/^${KEEP_USERS_PATTERN}$/d"  | xargs -n 1 userdel
+#cat /etc/group  | cut -d':' -f1 | sed "/^${KEEP_GROUPS_PATTERN}$/d" | xargs -n 1 groupdel
+
+[[ -n "${KEEP_USER}" ]] || {
+    groupadd -g 999 "${APP_NAME}"
+    useradd -u 999 -g 999 -Nm "${APP_NAME}"
+}
