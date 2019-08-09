@@ -48,7 +48,7 @@ jobs:
             --template-body "$( cat template.json )"
             aws cloudformation wait stack-create-complete --stack-name "$STACK_NAME"
             curl $( aws cloudformation describe-stacks --stack-name "$STACK_NAME" --output text --query "Stacks[].Outputs[?OutputKey == 'ExternalELBUrl'].OutputValue" ) \
-            | grep -q 'Joomla'
+            | grep -q 'Sign in'
             aws cloudformation delete-stack --stack-name "$PRODUCT_NAME-$CIRCLE_BUILD_NUM"
             aws cloudformation wait stack-delete-complete --stack-name "$PRODUCT_NAME-$CIRCLE_BUILD_NUM"
 
