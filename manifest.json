@@ -36,7 +36,7 @@
                     "APP_USER": "admin",
                     "APP_PASS": "turnkey1",
                     "APP_MAIL": "admin@example.com",
-                    "DB_USER": "matomo",
+                    "DB_USER": "root",
                     "DB_NAME": "matomo",
                     "DB_PASS": "turnkey1"
                 },
