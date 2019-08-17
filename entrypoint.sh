@@ -22,6 +22,7 @@ add vhosts matomo
 web_extract_src matomo 
 
 SQL="${OUR[SRCDIR]}/matomo-3.11.0.sql"
+sed -i "s|#__|${MY[DB_PREFIX]}|" "${SQL}"
 
 cp "${OUR[SRCDIR]}/config.ini.php" "${OUR[WEBDIR]}/config"
 
@@ -36,7 +37,6 @@ sed -i "s|dbname = \".*\"|dbname = \"${MY[DB_NAME]}\"|" "${OUR[WEBDIR]}/config/c
 sed -i "s|salt = \".*\"|salt = \"$(mcookie)\"|" "${OUR[WEBDIR]}/config/config.ini.php"
 
 
-sed -i "s|#__|${MY[DB_PREFIX]}|" "${SQL}"
 
 cp "${SQL}" "${INITDB}"
 unset SQL
