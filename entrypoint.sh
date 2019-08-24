@@ -20,6 +20,7 @@ passthrough_unless 'php-fpm' "$@"
 INITDB="${OUR[INITDBS]}/matomo.sql"
 add vhosts matomo
 web_extract_src matomo 
+random_if_empty APP_PASS
 
 SQL="${OUR[SRCDIR]}/matomo-3.11.0.sql"
 sed -i "s|#__|${MY[DB_PREFIX]}|" "${SQL}"
@@ -36,8 +37,6 @@ sed -i "s|dbname = \".*\"|dbname = \"${MY[DB_NAME]}\"|" "${OUR[WEBDIR]}/config/c
 
 sed -i "s|salt = \".*\"|salt = \"$(mcookie)\"|" "${OUR[WEBDIR]}/config/config.ini.php"
 
-
-
 cp "${SQL}" "${INITDB}"
 unset SQL
 
@@ -51,12 +50,7 @@ sed -i "s|trusted_hosts\[\] = \".*\"|trusted hosts\[\] = \"${APP_HOST}\"|" "${OU
 echo "UPDATE matomo_user SET email='${APP_MAIL}';" >> "${INITDB}"
 echo "UPDATE matomo_user SET password='${PASS_HASH}'" >> "${INITDB}"
 
-
-random_if_empty APP_PASS
-
-
 chown -R www-data:www-data "${OUR[WEBDIR]}"
-
 
 #reload_vhosts
 run "$@"
